@@ -7,8 +7,7 @@ graph TD;
     B --> C[ESP32];
     C --> D[Servidor Backend ASP.NET];
     D --> E[Banco de Dados];
-    D --> F[Frontend Next.js];
-    F --> G[Interface de Monitoramento];
+    D --> G[Interface de Monitoramento];
 ```
 ---
 
