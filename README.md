@@ -1,43 +1,21 @@
+# **Tag System**
 
-# Controlador de Acesso com ESP32 e RFID
+## Overview:
 
-```mermaid
-graph TD;
-    A[Usuário com cartão RFID] --> B[Leitor RFID];
-    B --> C[ESP32];
-    C --> D[Servidor Backend ASP.NET];
-    D --> E[Banco de Dados];
-    D --> G[Interface de Monitoramento];
-```
----
+> Adicionar mermaid
 
-Este projeto consiste no desenvolvimento de um sistema de controle de acesso baseado em um hardware embarcado com **ESP32** e um **leitor RFID**. O sistema será integrado a uma **aplicação Web** para monitoramento e gerenciamento em tempo real.
+## Descrição:
 
-A solução é composta por duas partes principais:
-1. **Aplicação IoT**: desenvolvida em **C++** e rodando no ESP32, será responsável pela lógica de controle de acesso.
-2. **Aplicação Web**: desenvolvida com **ASP.NET** no backend e **Next.js** no frontend, permitirá monitoramento e gerenciamento do sistema.
+> Adicionar descrição
 
-## Funcionalidades
+----
 
-- **Leitura de RFID**: Identificação de usuários através de cartões RFID.
-- **Autenticação**: Controle de acesso baseado em cartões cadastrados.
-- **Monitoramento em tempo real**: Registro e visualização de eventos de acesso através da aplicação web.
-- **Integração com IoT**: Comunicação entre o hardware ESP32 e o servidor web para troca de informações e registros.
+## Documentação:
 
----
-
-## Tecnologias Utilizadas
-
-### Backend
-- **ASP.NET**: Framework para desenvolvimento da API e lógica de backend.
-- **C#**: Linguagem para o desenvolvimento do backend.
-
-### Frontend
-- **Next.js**: Framework para desenvolvimento do frontend em React.
-- **JavaScript/TypeScript**: Linguagem utilizada no desenvolvimento da interface do usuário.
-
-### Hardware
-- **ESP32**: Microcontrolador responsável pela lógica de controle de acesso.
-- **RFID**: Leitor para identificação de usuários através de tags RFID.
-
----
+1. [Padrões de Commits](docs/commit-patterns.md)  
+2. [Gerenciamento de Branches](/docs/branch-management.md)
+3. [Ferramentas e Dependências](/docs/tools-and-dependencies.md)
+4. [Diagrama de Sequência](/docs/sequence-diagram.md)
+5. Preparar o ambiente para rodar a aplicação:  
+    1. [Ubuntu WSL Terminal (Recomendado)](/docs/application-environment/ubuntu.md)
+    2. [Windows Terminal](/docs/application-environment/windows.md)
