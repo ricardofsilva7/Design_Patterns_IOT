@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using TagSystemAPI.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<TagSystemAPIContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("TagSystemAPIContext") ?? throw new InvalidOperationException("Connection string 'TagSystemAPIContext' not found.")));
 
 // Add services to the container.
 
