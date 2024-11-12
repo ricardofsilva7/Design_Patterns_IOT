@@ -85,7 +85,7 @@ export default function RegisterUserTable() {
                             <TableRow key={i}>
                                 <TableCell>Pessoa {i+1}</TableCell>
                                 <TableCell>0{5+i}1{1+i}00{i+1}</TableCell>
-                                <TableCell>Aluno do (Bloco {1+i})</TableCell>
+                                <TableCell>Aluno no (Bloco {1+i})</TableCell>
                                 <TableCell>20/11/2024</TableCell>
                             </TableRow>
                         )

@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "../ui/label";
 import { DialogClose } from "@radix-ui/react-dialog";
 
-export default function Reports() {
+export default function Relatorios() {
     return (
         <Card className="w-full">
             <CardHeader>
@@ -70,23 +70,24 @@ export default function Reports() {
 
             <Table>
                 <TableHeader>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Horário</TableHead>
-                    <TableHead>Local</TableHead>
+                    <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Horário</TableHead>
+                        <TableHead>Local</TableHead>
+                    </TableRow>
                 </TableHeader>
 
                 <TableBody>
-                    {Array.from({ length: 5 }).map((_,i) =>{
-                        return (
-                            <TableRow key={i}>
-                                <TableCell>Relatório {i+1}</TableCell>
-                                <TableCell>0{5+i}:{1+i}0 0{i+1}/10/2024</TableCell>
-                                <TableCell>Área de Produção (Bloco {1+i})</TableCell>
-                            </TableRow>
-                        )
-                    })}
+                    {Array.from({ length: 5 }).map((_, i) => (
+                        <TableRow key={i}>
+                            <TableCell>Relatório {i + 1}</TableCell>
+                            <TableCell>0{5 + i}:{1 + i}0 0{i + 1}/10/2024</TableCell>
+                            <TableCell>Área de Produção (Bloco {1 + i})</TableCell>
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
+
         </Card>
     );
 }

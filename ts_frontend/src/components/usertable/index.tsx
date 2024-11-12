@@ -13,9 +13,9 @@ export default function UserTable() {
                         Registro de acessos
                     </CardTitle>
                     <form className="flex items-center gap-2">
-                        <Input  name="nome" placeholder="Nome"/>
-                        <Input  name="data" placeholder="Data" type="datetime-local"/>
-                        <Input  name="local" placeholder="Local"/>
+                        <Input name="nome" placeholder="Nome" />
+                        <Input name="data" placeholder="Data" type="datetime-local" />
+                        <Input name="local" placeholder="Local" />
 
                         <Button type="submit" variant="secondary">
                             <Search className="w-4 h-4 mr-2" />
@@ -38,15 +38,15 @@ export default function UserTable() {
                 </TableHeader>
 
                 <TableBody>
-                    {Array.from({ length: 5 }).map((_,i) =>{
+                    {Array.from({ length: 5 }).map((_, i) => {
                         return (
                             <TableRow key={i}>
-                                <TableCell>Pessoa {i+1}</TableCell>
+                                <TableCell>Pessoa {i + 1}</TableCell>
                                 <TableCell>Aluno ou Professor</TableCell>
-                                <TableCell>0{5+i}:{1+i}0 0{i+1}/10/2024</TableCell>
-                                <TableCell><X color="#FF0000"/></TableCell>
-                                <TableCell>0{6+i}:{1+i}0 0{i+1}/10/2024</TableCell>
-                                <TableCell>Sala (A{1+i})</TableCell>
+                                <TableCell>0{5 + i}:{1 + i}0 0{i + 1}/10/2024</TableCell>
+                                <TableCell><X color="#FF0000" /></TableCell>
+                                <TableCell>0{6 + i}:{1 + i}0 0{i + 1}/10/2024</TableCell>
+                                <TableCell>Sala (A{1 + i})</TableCell>
                             </TableRow>
                         )
                     })}

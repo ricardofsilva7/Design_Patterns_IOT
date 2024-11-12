@@ -20,9 +20,9 @@ export default function InfoCard({titulo, subtitulo, value, icone:Icone, prop}:C
               {Icone && <Icone className="ml-auto w-5 h-5" />}
               </div>
 
-            <CardDescription>
-              {subtitulo}
-            </CardDescription>
+              <p className="text-muted-foreground">
+                {subtitulo}
+              </p>
           </CardHeader>
 
           <CardContent>

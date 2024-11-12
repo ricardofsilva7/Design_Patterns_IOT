@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react";
-import Status from "@/components/reports/reports";
+import Relatorios from "@/components/relatorios";
 
 export default function Reports() {
     return (
@@ -10,7 +10,7 @@ export default function Reports() {
       <h2 className="my-2">Últimos relatórios gerados</h2>
 
       <section className="mt-4 flex flex-col md:flex-row gap-4">
-        <Status/>
+        <Relatorios/>
       </section>
     </div>
     );

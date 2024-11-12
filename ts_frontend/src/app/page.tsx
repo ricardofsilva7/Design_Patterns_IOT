@@ -1,7 +1,7 @@
 "use client"
 import InfoCard from "@/components/infocard";
 import UserTable from "@/components/usertable";
-import { Package } from "lucide-react";
+import { Clock, ScanEye, Timer, TimerOff } from "lucide-react";
 import React from "react";
 
 export default function App() {
@@ -11,10 +11,10 @@ export default function App() {
       <h2 className="my-2">Bem vindo de volta Admin</h2>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <InfoCard titulo="Acesso diário" subtitulo="Acessos nas últimas 24h" value={14} prop="pessoas" icone={Package} />
-        <InfoCard titulo="Em operação" subtitulo="Pessoas na sala no momento" value={3} prop="pessoas" icone={Package} />
-        <InfoCard titulo="Total de Entradas" subtitulo="Todos os acessos da semana" value={92} prop="acessos" icone={Package} />
-        <InfoCard titulo="Indisponibilidade" subtitulo="Tempo médio de parada" value={3} prop="horas" icone={Package} />
+        <InfoCard titulo="Acesso diário" subtitulo="Acessos nas últimas 24h" value={14} prop="pessoas" icone={Clock} />
+        <InfoCard titulo="Em operação" subtitulo="Pessoas presentes na sala neste momento" value={3} prop="pessoas" icone={ScanEye} />
+        <InfoCard titulo="Indisponibilidade" subtitulo="Tempo de sala inoperante nesta semana" value={53} prop="minutos" icone={TimerOff} />
+        <InfoCard titulo="Manutenção" subtitulo="Tempo médio de parada para manutenção na semana" value={3} prop="horas" icone={Timer} />
       </section>
 
       <section className="flex-1 mt-4">
@@ -23,7 +23,7 @@ export default function App() {
 
       <footer className="flex-1 mt-4">
         <p>Todos os direitos reservados, 2024.</p>
-        <p>4/10 Corp Group Inc Entertainament.</p>
+        <p>Squad 4/10 .</p>
       </footer>
     </div>
   );

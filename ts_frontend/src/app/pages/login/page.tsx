@@ -1,10 +1,10 @@
 import { Eye, Lock, User } from "lucide-react";
 import React from "react";
-import { useState } from "react";
 import { Button } from "../../../components/ui/button";
 import './bganimation.css';
+import Link from "next/link";
 
-export default function Login({ onLogin }: { onLogin: () => void }) {
+export default function Login() {
     return (
         <div className="flex text-center items-center justify-center my-28">
             <div className="rounded animated-background p-10 w-full">
@@ -28,7 +28,9 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
                     placeholder=" Senha" />
                     <Lock />
                 </div>
-                <Button className="m-3" onClick={onLogin}>Entrar</Button>
+                <Link href="/" >
+                    <Button className="m-3" >Entrar</Button>
+                </Link>
                 <div id="signup-link">
                     <p className="text">
                         Não tem conta? <a href="#" className="hover:text-blue-500">Registrar</a>

@@ -35,7 +35,7 @@ export default function UserCard({ nome, email, cargo, senha }: UserInformations
 
           {/* User Information */}
           <div className="mb-6">
-            <p className="text-base font-bold">Nível de acesso:</p>
+            <p className="text-base font-bold">Cargo:</p>
             <p className="text-sm text-gray-500 mb-2">{cargo}</p>
             <p className="text-base font-bold">Contato:</p>
             <p className="text-sm text-gray-500 mb-2">{email}</p>
@@ -73,9 +73,8 @@ export default function UserCard({ nome, email, cargo, senha }: UserInformations
                           </DropdownMenuTrigger>
                           <DropdownMenuContent className="w-56">
                               <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-                              <DropdownMenuRadioItem value="top">Administrador</DropdownMenuRadioItem>
-                              <DropdownMenuRadioItem value="bottom">Editor</DropdownMenuRadioItem>
-                              <DropdownMenuRadioItem value="right">Leitor</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="top">Administrador</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="right">Leitor</DropdownMenuRadioItem>
                               </DropdownMenuRadioGroup>
                           </DropdownMenuContent>
                           </DropdownMenu>
