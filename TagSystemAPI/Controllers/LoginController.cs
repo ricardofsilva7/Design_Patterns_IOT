@@ -73,15 +73,22 @@ namespace TagSystemAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Login
+       // POST: api/Login
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Login>> PostLogin(Login login)
+        public async Task<ActionResult<Login>> PostLogin(LoginDTO loginDTO)
         {
+
+            var login = new Login
+            {
+                Username = loginDTO.Username,
+                Password = loginDTO.Password
+            };
+
             _context.Login.Add(login);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLogin", new { id = login.Id }, login);
+            return CreatedAtAction(nameof(GetLogin), new { id = login.Id }, LoginToDTO(login));
         }
 
         // DELETE: api/Login/5
@@ -104,5 +111,11 @@ namespace TagSystemAPI.Controllers
         {
             return _context.Login.Any(e => e.Id == id);
         }
+
+        private static LoginDTO LoginToDTO(Login login) =>
+        new LoginDTO{
+            Username = login.Username,
+            Password = login.Password
+        };
     }
 }
