@@ -1,11 +1,11 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace TagSystemAPI.Models;
+namespace TagSystemAPI; 
 
 public class Access
 {
-    public int UserId { get; set; }
-    public int RoomId { get; set; }
-    public int AccessId { get; set; }
+    public int Id {get;set;}
+    public int Rfid {get;set;}
+    public string Room {get;set;}
     public bool IsAuthorized {get;set;}
+    public string TimeAccess {get;set;}
+
 }

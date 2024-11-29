@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TagSystemAPI;
 using TagSystemAPI.Data;
-using TagSystemAPI.Models;
 
 namespace TagSystemAPI.Controllers
 {
@@ -14,9 +14,9 @@ namespace TagSystemAPI.Controllers
     [ApiController]
     public class AccessController : ControllerBase
     {
-        private readonly TagSystemAPIContext _context;
+        private readonly TagSystemContext _context;
 
-        public AccessController(TagSystemAPIContext context)
+        public AccessController(TagSystemContext context)
         {
             _context = context;
         }
@@ -47,7 +47,7 @@ namespace TagSystemAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccess(int id, Access access)
         {
-            if (id != access.AccessId)
+            if (id != access.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace TagSystemAPI.Controllers
             _context.Access.Add(access);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAccess", new { id = access.AccessId }, access);
+            return CreatedAtAction("GetAccess", new { id = access.Id }, access);
         }
 
         // DELETE: api/Access/5
@@ -102,7 +102,7 @@ namespace TagSystemAPI.Controllers
 
         private bool AccessExists(int id)
         {
-            return _context.Access.Any(e => e.AccessId == id);
+            return _context.Access.Any(e => e.Id == id);
         }
     }
 }
