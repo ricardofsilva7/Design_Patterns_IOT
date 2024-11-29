@@ -1,6 +1,6 @@
-namespace ApiTagSystem;
+namespace TagSystemAPI; 
 
-public class Acesses
+public class Access
 {
     public int Id {get;set;}
     public int Rfid {get;set;}

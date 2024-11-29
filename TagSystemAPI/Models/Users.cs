@@ -1,4 +1,4 @@
-namespace ApiTagSystem;
+namespace TagSystemAPI;
 
 public class Users
 {

@@ -5,54 +5,54 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ApiTagSystem;
-using ApiTagSystem.Data;
+using TagSystemAPI;
+using TagSystemAPI.Data;
 
-namespace ApiTagSystem.Controllers
+namespace TagSystemAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly TagSystemContext _context;
 
-        public UsersController(TagSystemContext context)
+        public LoginController(TagSystemContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Login
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Login>>> GetLogin()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Login.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Login/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Users>> GetUsers(int id)
+        public async Task<ActionResult<Login>> GetLogin(int id)
         {
-            var users = await _context.Users.FindAsync(id);
+            var login = await _context.Login.FindAsync(id);
 
-            if (users == null)
+            if (login == null)
             {
                 return NotFound();
             }
 
-            return users;
+            return login;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Login/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsers(int id, Users users)
+        public async Task<IActionResult> PutLogin(int id, Login login)
         {
-            if (id != users.Id)
+            if (id != login.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(users).State = EntityState.Modified;
+            _context.Entry(login).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace ApiTagSystem.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsersExists(id))
+                if (!LoginExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace ApiTagSystem.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Login
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Users>> PostUsers(Users users)
+        public async Task<ActionResult<Login>> PostLogin(Login login)
         {
-            _context.Users.Add(users);
+            _context.Login.Add(login);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = users.Id }, users);
+            return CreatedAtAction("GetLogin", new { id = login.Id }, login);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Login/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsers(int id)
+        public async Task<IActionResult> DeleteLogin(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var login = await _context.Login.FindAsync(id);
+            if (login == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(users);
+            _context.Login.Remove(login);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UsersExists(int id)
+        private bool LoginExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Login.Any(e => e.Id == id);
         }
     }
 }

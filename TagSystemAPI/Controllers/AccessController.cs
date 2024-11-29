@@ -5,54 +5,54 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ApiTagSystem;
-using ApiTagSystem.Data;
+using TagSystemAPI;
+using TagSystemAPI.Data;
 
-namespace ApiTagSystem.Controllers
+namespace TagSystemAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AcessesController : ControllerBase
+    public class AccessController : ControllerBase
     {
         private readonly TagSystemContext _context;
 
-        public AcessesController(TagSystemContext context)
+        public AccessController(TagSystemContext context)
         {
             _context = context;
         }
 
-        // GET: api/Acesses
+        // GET: api/Access
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Acesses>>> GetAcesses()
+        public async Task<ActionResult<IEnumerable<Access>>> GetAccess()
         {
-            return await _context.Acesses.ToListAsync();
+            return await _context.Access.ToListAsync();
         }
 
-        // GET: api/Acesses/5
+        // GET: api/Access/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Acesses>> GetAcesses(int id)
+        public async Task<ActionResult<Access>> GetAccess(int id)
         {
-            var acesses = await _context.Acesses.FindAsync(id);
+            var access = await _context.Access.FindAsync(id);
 
-            if (acesses == null)
+            if (access == null)
             {
                 return NotFound();
             }
 
-            return acesses;
+            return access;
         }
 
-        // PUT: api/Acesses/5
+        // PUT: api/Access/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAcesses(int id, Acesses acesses)
+        public async Task<IActionResult> PutAccess(int id, Access access)
         {
-            if (id != acesses.Id)
+            if (id != access.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(acesses).State = EntityState.Modified;
+            _context.Entry(access).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace ApiTagSystem.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AcessesExists(id))
+                if (!AccessExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace ApiTagSystem.Controllers
             return NoContent();
         }
 
-        // POST: api/Acesses
+        // POST: api/Access
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Acesses>> PostAcesses(Acesses acesses)
+        public async Task<ActionResult<Access>> PostAccess(Access access)
         {
-            _context.Acesses.Add(acesses);
+            _context.Access.Add(access);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAcesses", new { id = acesses.Id }, acesses);
+            return CreatedAtAction("GetAccess", new { id = access.Id }, access);
         }
 
-        // DELETE: api/Acesses/5
+        // DELETE: api/Access/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAcesses(int id)
+        public async Task<IActionResult> DeleteAccess(int id)
         {
-            var acesses = await _context.Acesses.FindAsync(id);
-            if (acesses == null)
+            var access = await _context.Access.FindAsync(id);
+            if (access == null)
             {
                 return NotFound();
             }
 
-            _context.Acesses.Remove(acesses);
+            _context.Access.Remove(access);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AcessesExists(int id)
+        private bool AccessExists(int id)
         {
-            return _context.Acesses.Any(e => e.Id == id);
+            return _context.Access.Any(e => e.Id == id);
         }
     }
 }

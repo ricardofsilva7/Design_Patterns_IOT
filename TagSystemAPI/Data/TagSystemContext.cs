@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using ApiTagSystem;
+using TagSystemAPI;
 
-namespace ApiTagSystem.Data
+namespace TagSystemAPI.Data
 {
     public class TagSystemContext : DbContext
     {
@@ -14,8 +14,8 @@ namespace ApiTagSystem.Data
         {
         }
 
-        public DbSet<ApiTagSystem.Login> Login { get; set; } = default!;
-        public DbSet<ApiTagSystem.Acesses> Acesses { get; set; } = default!;
-        public DbSet<ApiTagSystem.Users> Users { get; set; } = default!;
+        public DbSet<TagSystemAPI.Login> Login { get; set; } = default!;
+        public DbSet<TagSystemAPI.Access> Access { get; set; } = default!;
+        public DbSet<TagSystemAPI.Users> Users { get; set; } = default!;
     }
 }
