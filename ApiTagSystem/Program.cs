@@ -1,5 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ApiTagSystem.Data;
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddDbContext<TagSystemContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("TagSystemContext") ?? throw new InvalidOperationException("Connection string 'TagSystemContext' not found.")));
+    
 // Add services to the container.
 
 builder.Services.AddControllers();
