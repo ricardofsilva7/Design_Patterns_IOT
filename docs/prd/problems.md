@@ -67,3 +67,7 @@
 - **Processos Ineficientes**: O processo manual de controle de acesso é mais propenso a erros e ineficiência, o que reduz a produtividade. O sistema automatizado aumenta a produtividade ao otimizar e agilizar o controle de acessos.
 
 - **Redução de Competitividade**: A ineficiência nos processos de controle de acesso pode afetar a competitividade no mercado. A automação melhora a competitividade ao oferecer maior eficiência, segurança e capacidade de resposta rápida.
+
+---
+
+### [**> Retornar à Página Inicial.**](/README.md)

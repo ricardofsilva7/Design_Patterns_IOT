@@ -52,3 +52,7 @@ quadrantChart
     Campaign F: [0.35, 0.78]
     
 ```
+
+---
+
+### [**> Retornar à Página Inicial.**](/README.md)

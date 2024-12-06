@@ -33,7 +33,10 @@ A solução é composta por duas partes principais:
 1. [Padrões de Commits](docs/commit-patterns.md)  
 2. [Gerenciamento de Branches](/docs/branch-management.md)
 3. [Ferramentas e Dependências](/docs/tools-and-dependencies.md)
-4. [Diagrama de Sequência](/docs/sequence-diagram.md)
-5. Preparar o ambiente para rodar a aplicação:  
+4. [PRD](/docs/prd/prd.md)  
+    1. [Problemas](/docs/prd/problems.md)  
+    2. [Brainstorm](/docs/prd/brainstorm.md)  
+5. [Diagrama Entidade Relacionamento (Figma)](https://www.figma.com/design/3oB1nT9B4BTFo6LasEkG53/TAG-System---DER?node-id=86-813&t=wrFsvmaySl8aBn76-1)
+<!-- 6. Preparar o ambiente para rodar a aplicação:  
     1. [Ubuntu WSL Terminal (Recomendado)](/docs/application-environment/ubuntu.md)
-    2. [Windows Terminal](/docs/application-environment/windows.md)
+    2. [Windows Terminal](/docs/application-environment/windows.md) -->

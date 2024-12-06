@@ -1,26 +1,35 @@
 # **Padrões de Commits**
 
-Padrão escolhido:  
+### *Padrão Adotado:*  
 [![Padrões de commit by: iuricode](https://img.shields.io/badge/Padrões%20de%20Commits-@iuricode-3776ab?logo=git)](https://github.com/iuricode/padroes-de-commits)
 
-Estrutura do commit:
+---
+
+**Estrutura padrão:**  
 ```
-git commit -m ":emoji: tag: [descrição da ação do commit em inglês no infinitivo como se esse commit fosse fazer algo]"
+git commit -m ":emoji: tag: [descrição da ação do commit em inglês no infinitivo, como se estivesse descrevendo a intenção do commit]"
 ```
 
-Exemplo de commit:  
+---
+
+**Exemplos:**  
 ```
 git commit -m ":tada: init: start project"
 ```
+```
+git commit -m ":sparkles: feat: add new class Product"
+```
 
-Resultado esperado:
+---
+
+**Resultado Esperado no Histórico:**  
 ```
 🎉 init: start project
 ```
+```
+✨ feat: add new class Product
+```
 
-**Observação:  
-Todo commit deverá ser linear na aplicação de maneira que ao realizar algum rollback a aplicação não quebre.**
+---
 
-----
-
-### [**> Voltar página.**](/README.md)
+### [**> Retornar à Página Inicial.**](/README.md)
