@@ -43,16 +43,27 @@ namespace TagSystemAPI.Controllers
         }
 
         // PUT: api/Login/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLogin(int id, Login login)
+        public async Task<IActionResult> PutLogin(int id, LoginDTO loginDTO)
         {
-            if (id != login.Id)
+            // Verifica se o ID é válido
+            if (id <= 0)
             {
-                return BadRequest();
+                return BadRequest("Invalid ID.");
             }
 
-            _context.Entry(login).State = EntityState.Modified;
+            // Busca o login correspondente no banco de dados
+            var existingLogin = await _context.Login.FindAsync(id);
+            if (existingLogin == null)
+            {
+                return NotFound();
+            }
+
+            // Atualiza os campos com os dados do DTO
+            existingLogin.Username = loginDTO.Username;
+            existingLogin.Password = loginDTO.Password;
+
+            _context.Entry(existingLogin).State = EntityState.Modified;
 
             try
             {
@@ -73,9 +84,10 @@ namespace TagSystemAPI.Controllers
             return NoContent();
         }
 
-       // POST: api/Login
+
+        // POST: api/Login
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Login>> PostLogin(LoginDTO loginDTO)
         {
 
@@ -90,6 +102,25 @@ namespace TagSystemAPI.Controllers
 
             return CreatedAtAction(nameof(GetLogin), new { id = login.Id }, LoginToDTO(login));
         }
+
+        // POST: api/Login
+        [HttpPost("Authenticate")]
+        public async Task<ActionResult<Login>> Authenticate(LoginDTO loginDTO)
+        {
+            // Busca pelo usuário e senha no banco de dados
+            var existingLogin = await _context.Login
+                .FirstOrDefaultAsync(l => l.Username == loginDTO.Username && l.Password == loginDTO.Password);
+
+            if (existingLogin == null)
+            {
+                //Retorna erro de autenticação
+                return Unauthorized(new { message = "Invalid username or password" });
+            }
+
+            //Retorna o usuário encontrado
+            return Ok("Login existente");
+        }
+
 
         // DELETE: api/Login/5
         [HttpDelete("{id}")]
