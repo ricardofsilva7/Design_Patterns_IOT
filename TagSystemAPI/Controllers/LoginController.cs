@@ -114,11 +114,11 @@ namespace TagSystemAPI.Controllers
             if (existingLogin == null)
             {
                 //Retorna erro de autenticação
-                return Unauthorized(new { message = "Invalid username or password" });
+                return Unauthorized(new { message = "Autenticação falhou" });
             }
 
             //Retorna o usuário encontrado
-            return Ok("Login existente");
+            return Ok("Login autenticado");
         }
 
 
