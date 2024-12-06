@@ -7,13 +7,13 @@ O objetivo do Tag System é monitorar o acesso de usuários a uma sala restrita 
 
 O sistema visa aumentar a segurança da sala, garantir que apenas usuários autorizados possam acessar o ambiente e oferecer informações valiosas sobre os padrões de acesso e movimentação na sala. Ele será fundamental para controlar o acesso físico de maneira automatizada e eficiente.
 
-[Ref.: Identificar problema](https://github.com/4-10Corp/IoT/blob/feature/idealize-the-product/Problemas.md)
+[Ref.: Identificar problema](problems.md)
 
 # *Por que* implementar isto?
 
 Implementar essa solução é essencial para garantir o controle de acesso seguro e eficiente a áreas restritas. Ao automatizar o processo de verificação das tags e monitorar em tempo real o status de acesso, o sistema evita erros humanos e melhora a rastreabilidade e a segurança. Além disso, a possibilidade de gerar métricas sobre os acessos permite ao administrador tomar decisões informadas sobre segurança e uso da sala.
 
-[Ref.: Brainstorm](https://github.com/4-10Corp/IoT/blob/feature/idealize-the-product/Brainstorm.md) 
+[Ref.: Brainstorm](brainstorm.md) 
 
 ---
 
@@ -223,3 +223,7 @@ graph
         G --> L[Especialistas IoT]
     end
 ```
+
+---
+
+### [**> Retornar à Página Inicial.**](/README.md)

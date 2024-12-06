@@ -1,1 +1,4 @@
-### [**> Voltar página.**](/README.md)
+
+---
+
+### [**> Retornar à Página Inicial.**](/README.md)
