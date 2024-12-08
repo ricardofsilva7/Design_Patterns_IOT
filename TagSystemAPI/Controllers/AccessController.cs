@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TagSystemAPI.Data;
@@ -30,7 +31,35 @@ namespace TagSystemAPI.Controllers
             var RejectAccess = await _context.Access.Where(ra => ra.IsAuthorized == false).CountAsync();
             return Ok(new { RejectAccess });
         }
-        
+
+        [HttpGet("accesshistory")]
+        public async Task<ActionResult<IEnumerable<object>>> GetAccessHistory()
+        {
+            //consulta para retornar o histórico de acessos 
+            /*
+             schema:
+             Nome (Users.Name),
+             Cargo (Users.Role),
+             Horário de entrada (Access.TimeAccess),
+             Tag ativa (Access.isAuthorized),
+             Local (Access.Room)
+            */
+            
+            var accessHistory = await _context.Access
+                .Join(_context.Users, access => access.Id, user => user.Id,(access, user) =>
+                new 
+                {
+                    Nome = user.Name,
+                    Cargo = user.Role,
+                    HorarioEntrada = access.TimeAccess,
+                    TagAtiva = access.IsAuthorized,
+                    Local = access.Room
+                })
+                .ToListAsync();
+
+            return Ok(accessHistory);
+        }
+
 
         [HttpGet("total")]
         public async Task<ActionResult<IEnumerable<Access>>> GetTotalAccess()
@@ -44,8 +73,11 @@ namespace TagSystemAPI.Controllers
         public async Task<ActionResult<IEnumerable<Access>>> GetLatestAccess()
         {
             //consulta para retornar a data do último acesso
-            var LatestAccess = await _context.Access.OrderByDescending(la => la.Id).FirstOrDefaultAsync();
-            return Ok(new { LatestAccess });
+            var UnformatHourAccess = await _context.Access.Select(la => la.TimeAccess).FirstAsync();
+            // Parse do tipo 'var' para 'DateTime'
+            DateTime parsedTime = DateTime.Parse(UnformatHourAccess);
+            var HourAccess = parsedTime.ToString("HH:mm");
+            return Ok(new { HourAccess });
         }
 
         [HttpGet("dailyaccess")]
@@ -54,19 +86,19 @@ namespace TagSystemAPI.Controllers
             //Consulta para retornar os acessos
             // formato de data armazenado no banco: AAAA-MM-DD HH:MM:SS
 
-            var DailyAccess = await _context.Access.Select(da => da.TimeAccess).ToListAsync(); // -> O(n)? 
-       
+            var DailyAccess = await _context.Access.Select(da => da.TimeAccess).ToListAsync(); // -> O(n)?
+
             // Esta lista armazena apenas os dias e comparada ao dia de hoje podemos retornar quantos acessos foram feitos
             // em função do dia atual:
             // (Observe que estes valores variam de 01 à 31) 2024-12-09 12:00:0
-            
+
             var DayList = DailyAccess.Select(da => DateTime.Parse(da).ToString("dd")).ToList();// -> O(n)?
 
             // Finalmente podemos contabilizar o número de acessos dado que este resultado
             // é obtido quando somamos o número de elementos presentes na lista cujo o seu valor    
             // é igual ao dia de hoje.
             var TodayAccess = DayList.Count(da => da == DateTime.Now.ToString("dd")); // --> O(n)?
-            
+
 
             return Ok(new { TodayAccess });
         }
