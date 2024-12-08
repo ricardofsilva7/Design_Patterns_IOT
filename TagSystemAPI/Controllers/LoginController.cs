@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TagSystemAPI;
+using TagSystemAPI.Models;
 using TagSystemAPI.Data;
 
 namespace TagSystemAPI.Controllers

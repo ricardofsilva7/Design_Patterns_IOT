@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TagSystemAPI;
 using TagSystemAPI.Data;
+using TagSystemAPI.Models;
 
 namespace TagSystemAPI.Controllers
 {
@@ -26,6 +21,30 @@ namespace TagSystemAPI.Controllers
         public async Task<ActionResult<IEnumerable<Access>>> GetAccess()
         {
             return await _context.Access.ToListAsync();
+        }
+
+        [HttpGet("total")]
+        public async Task<ActionResult<IEnumerable<Access>>> GetTotalAccess()
+        {
+            //consulta para retornar o número total de linhas da tabela 'Access'
+            var TotalAccess = await _context.Access.CountAsync();
+            return Ok(new { TotalAccess });
+        }
+
+        [HttpGet("latest")]
+        public async Task<ActionResult<IEnumerable<Access>>> GetLatestAccess()
+        {
+            //consulta para retornar a data do último acesso
+            var LatestAccess = await _context.Access.OrderByDescending(la => la.TimeAccess).FirstOrDefaultAsync();
+            return Ok(new { LatestAccess });
+        }
+
+        [HttpGet("dailyaccess")]
+        public async Task<ActionResult<IEnumerable<Access>>> GetDailyAccess()
+        {
+            //consulta para retornar o número total de linhas da tabela 'Access'
+            var TotalAccess = await _context.Access.CountAsync();
+            return Ok(new { TotalAccess });
         }
 
         // GET: api/Access/5
@@ -76,8 +95,23 @@ namespace TagSystemAPI.Controllers
         // POST: api/Access
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Access>> PostAccess(Access access)
+        public async Task<ActionResult<Access>> PostAccess(AccessDTO accessDTO)
         {
+            // Devemos verificar se o rfid já existe na tabela User para autorizar ou não o acesso
+            // e preencher o campo 'isAuthorized' com 'true' ou 'false'
+
+            // Consulta para buscar o 'rfid' na tabela 'user'
+            var AccessAuthorized = await _context.Users.AnyAsync(u => u.Rfid == accessDTO.Rfid);
+
+            var access = new Access
+            {
+                Rfid = accessDTO.Rfid,
+                Room = accessDTO.Room,
+                TimeAccess = accessDTO.TimeAccess,
+                // armazena o resultado da consulta no campo 'isAuthorized'
+                IsAuthorized = AccessAuthorized,
+            };
+
             _context.Access.Add(access);
             await _context.SaveChangesAsync();
 

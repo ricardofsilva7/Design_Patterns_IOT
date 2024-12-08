@@ -11,10 +11,10 @@ export default function App() {
       <h2 className="my-2">Bem vindo de volta Admin</h2>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <InfoCard titulo="Acesso diário" subtitulo="Acessos nas últimas 24h" value={14} prop="pessoas" icone={Clock} />
-        <InfoCard titulo="Em operação" subtitulo="Pessoas presentes na sala neste momento" value={3} prop="pessoas" icone={ScanEye} />
-        <InfoCard titulo="Indisponibilidade" subtitulo="Tempo de sala inoperante nesta semana" value={53} prop="minutos" icone={TimerOff} />
-        <InfoCard titulo="Manutenção" subtitulo="Tempo médio de parada para manutenção na semana" value={3} prop="horas" icone={Timer} />
+        <InfoCard titulo="Acesso diário" subtitulo="Acessos nas últimas 12h" value={14} prop="pessoas" icone={Clock} />
+        <InfoCard titulo="Total de pessoas" subtitulo="Número de pessoas que passaram por esta sala" value={3} prop="pessoas" icone={ScanEye} />
+        <InfoCard titulo="Capacidade máxima" subtitulo="Lotação máxima da sala" value={10} prop="pessoas" icone={TimerOff} />
+        <InfoCard titulo="Último acesso" subtitulo="Horário do acesso mais recente" value={3} prop="horas" icone={Timer} />
       </section>
 
       <section className="flex-1 mt-4">

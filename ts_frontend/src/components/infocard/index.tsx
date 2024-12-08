@@ -1,5 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import React, {ReactNode} from "react"
+import React, { useState, useEffect, useCallback } from "react";
+import axios from 'axios';
+
 
 interface CardInformations {
   titulo: string;
@@ -9,7 +11,18 @@ interface CardInformations {
   prop?: string;
 }
 
+interface AccessInfo{
+  id?: number;
+  rfid?: number;
+  room?: string;
+  isAuthorized?: boolean;
+  TimeAccess?: String;
+}
+
 export default function InfoCard({titulo, subtitulo, value, icone:Icone, prop}:CardInformations) {
+  const [data,setData] = useState<AccessInfo | null>(null);
+  const [error,setError] = useState<string | null>(null);
+  
     return (
         <Card>
           <CardHeader>
