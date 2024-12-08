@@ -23,6 +23,15 @@ namespace TagSystemAPI.Controllers
             return await _context.Access.ToListAsync();
         }
 
+        [HttpGet("rejected")]
+        public async Task<ActionResult<IEnumerable<Access>>> GetRejectedAccess()
+        {
+            //consulta para retornar o número de tentativas de acesso à sala
+            var RejectAccess = await _context.Access.Where(ra => ra.IsAuthorized == false).CountAsync();
+            return Ok(new { RejectAccess });
+        }
+        
+
         [HttpGet("total")]
         public async Task<ActionResult<IEnumerable<Access>>> GetTotalAccess()
         {
@@ -35,16 +44,31 @@ namespace TagSystemAPI.Controllers
         public async Task<ActionResult<IEnumerable<Access>>> GetLatestAccess()
         {
             //consulta para retornar a data do último acesso
-            var LatestAccess = await _context.Access.OrderByDescending(la => la.TimeAccess).FirstOrDefaultAsync();
+            var LatestAccess = await _context.Access.OrderByDescending(la => la.Id).FirstOrDefaultAsync();
             return Ok(new { LatestAccess });
         }
 
         [HttpGet("dailyaccess")]
         public async Task<ActionResult<IEnumerable<Access>>> GetDailyAccess()
         {
-            //consulta para retornar o número total de linhas da tabela 'Access'
-            var TotalAccess = await _context.Access.CountAsync();
-            return Ok(new { TotalAccess });
+            //Consulta para retornar os acessos
+            // formato de data armazenado no banco: AAAA-MM-DD HH:MM:SS
+
+            var DailyAccess = await _context.Access.Select(da => da.TimeAccess).ToListAsync(); // -> O(n)? 
+       
+            // Esta lista armazena apenas os dias e comparada ao dia de hoje podemos retornar quantos acessos foram feitos
+            // em função do dia atual:
+            // (Observe que estes valores variam de 01 à 31) 2024-12-09 12:00:0
+            
+            var DayList = DailyAccess.Select(da => DateTime.Parse(da).ToString("dd")).ToList();// -> O(n)?
+
+            // Finalmente podemos contabilizar o número de acessos dado que este resultado
+            // é obtido quando somamos o número de elementos presentes na lista cujo o seu valor    
+            // é igual ao dia de hoje.
+            var TodayAccess = DayList.Count(da => da == DateTime.Now.ToString("dd")); // --> O(n)?
+            
+
+            return Ok(new { TodayAccess });
         }
 
         // GET: api/Access/5

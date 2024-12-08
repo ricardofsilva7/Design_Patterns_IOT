@@ -6,7 +6,6 @@ import axios from 'axios';
 interface CardInformations {
   titulo: string;
   subtitulo?: string;
-  value: number;
   icone: React.FC<React.SVGProps<SVGSVGElement>>;
   prop?: string;
 }
@@ -19,7 +18,7 @@ interface AccessInfo{
   TimeAccess?: String;
 }
 
-export default function InfoCard({titulo, subtitulo, value, icone:Icone, prop}:CardInformations) {
+export default function InfoCard({titulo, subtitulo, icone:Icone, prop}:CardInformations) {
   const [data,setData] = useState<AccessInfo | null>(null);
   const [error,setError] = useState<string | null>(null);
   
@@ -39,7 +38,7 @@ export default function InfoCard({titulo, subtitulo, value, icone:Icone, prop}:C
           </CardHeader>
 
           <CardContent>
-            <p className="text-base sm:text-lg font-bold">{value} {prop}</p>
+            <p className="text-base sm:text-lg font-bold">{prop}</p>
           </CardContent>
         </Card>
     );

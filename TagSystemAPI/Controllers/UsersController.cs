@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TagSystemAPI;
+using TagSystemAPI.Models;
 using TagSystemAPI.Data;
+using NuGet.Common;
 
 namespace TagSystemAPI.Controllers
 {
@@ -76,8 +77,22 @@ namespace TagSystemAPI.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Users>> PostUsers(Users users)
+        public async Task<ActionResult<Users>> PostUsers(UsersDTO usersDTO)
         {
+            //Para criar um usuário, devemos armazenar o horário da criaçao no banco
+            // para isso podemos usar: 
+            DateTime now = DateTime.Now;
+
+
+            var users = new Users
+            {
+                Rfid = usersDTO.Rfid,
+                Name = usersDTO.Name,
+                Role = usersDTO.Role,
+                CreatedBy = 0,
+                CreatedIn = now.ToString("yyyy-MM-dd HH:mm:ss"),
+            };
+
             _context.Users.Add(users);
             await _context.SaveChangesAsync();
 
