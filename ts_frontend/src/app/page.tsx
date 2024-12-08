@@ -11,19 +11,42 @@ export default function App() {
       <h2 className="my-2">Bem vindo de volta Admin</h2>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <InfoCard titulo="Acesso diário" subtitulo="Acessos nas últimas 12h" prop="pessoas" icone={Clock} />
-        <InfoCard titulo="Total de pessoas" subtitulo="Número de pessoas que passaram por esta sala" prop="pessoas" icone={ScanEye} />
-        <InfoCard titulo="Número de acessos rejeitados" subtitulo="Número de tentativas de acessos" prop="pessoas" icone={TimerOff} />
-        <InfoCard titulo="Último acesso" subtitulo="Horário do acesso mais recente" prop="horas" icone={Timer} />
+
+        <InfoCard
+          titulo="Acessos diários"
+          subtitulo="Número de acessos permitidos no dia atual."
+          prop="acessos"
+          icone={Clock}
+        />
+
+        <InfoCard
+          titulo="Tentativas de acesso"
+          subtitulo="Número total de tentativas de acesso ocorridas."
+          prop="tentativas"
+          icone={ScanEye}
+        />
+
+        <InfoCard
+          titulo="Acessos rejeitados"
+          subtitulo="Número total de tentativas de acessos rejeitados." 
+          prop="tentativas"
+          icone={TimerOff}
+        />
+
+        <InfoCard
+          titulo="Último acesso"
+          subtitulo="Horário do último acesso permitido"
+          prop="de hoje"
+          icone={Timer}
+        />
       </section>
 
       <section className="flex-1 mt-4">
-        <UserTable/>
+        <UserTable />
       </section>
 
       <footer className="flex-1 mt-4">
-        <p>Todos os direitos reservados, 2024.</p>
-        <p>Squad 4/10 .</p>
+        <p>Todos os direitos reservados a 2024.</p>
       </footer>
     </div>
   );
