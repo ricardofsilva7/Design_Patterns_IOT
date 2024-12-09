@@ -43,8 +43,8 @@ export function Sidebar() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                         <Link 
-                    href="/"
-                    className={`sidebar ${ pathname === '/' ? 'active' : '' }`}
+                    href="/pages/home"
+                    className={`sidebar ${ pathname === '/pages/home' ? 'active' : '' }`}
                     >
                         <Home className='h-5 w-5'/>
                         <span className='sr-only'>Icone Início</span>
@@ -114,7 +114,7 @@ export function Sidebar() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link 
-                            href="/pages/login"
+                            href="/"
                             className='flex h-10 w-10 shrink-0 items-center justify-center 
                             rounded-lg text-muted-foreground transition-colors hover:text-red-500'
                             >
