@@ -17,13 +17,5 @@ namespace TagSystemAPI.Data
         public DbSet<TagSystemAPI.Login> Login { get; set; } = default!;
         public DbSet<TagSystemAPI.Access> Access { get; set; } = default!;
         public DbSet<TagSystemAPI.Users> Users { get; set; } = default!;
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            
-            modelBuilder.Ignore<LoginDTO>();
-
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }

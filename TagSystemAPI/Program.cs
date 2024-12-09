@@ -5,16 +5,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TagSystemContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("TagSystemContext") ?? throw new InvalidOperationException("Connection string 'TagSystemContext' not found.")));
 
-// Add services to the container.
+// Adicione o serviço de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy => policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
+
+// Habilite o CORS para a política definida
+app.UseCors("AllowReactApp");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
