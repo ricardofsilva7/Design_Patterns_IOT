@@ -34,7 +34,7 @@ export default function InfoCard({ titulo, subtitulo, icone: Icone, prop }: Card
         urlTarget = dailyaccessUrl;
       } else if (titulo === "Tentativas de acesso") {
         urlTarget = totalUrl;
-      } else if (titulo == "Acessos rejeitados") {
+      } else if (titulo == "Acessos negados") {
         urlTarget = rejectedUrl;
       } else if (titulo == "Último acesso") {
         urlTarget = latestUrl;
@@ -56,7 +56,7 @@ export default function InfoCard({ titulo, subtitulo, icone: Icone, prop }: Card
         setData({ dailyaccess: response.data.todayAccess });
       } else if (titulo === "Tentativas de acesso" && response.data) {
         setData({ total: response.data.totalAccess });
-      } else if (titulo === "Acessos rejeitados" && response.data) {
+      } else if (titulo === "Acessos negados" && response.data) {
         setData({ rejected: response.data.rejectAccess })
       } else if (titulo === "Último acesso" && response.data) {
         setData({ latest: response.data.hourAccess })
@@ -94,7 +94,7 @@ export default function InfoCard({ titulo, subtitulo, icone: Icone, prop }: Card
           <p className="text-base sm:text-lg font-bold">
             {titulo === "Acessos diários" && `${data.dailyaccess} ${prop}`}
             {titulo === "Tentativas de acesso" && `${data.total} ${prop}`}
-            {titulo === "Acessos rejeitados" && `${data.rejected} ${prop}`}
+            {titulo === "Acessos negados" && `${data.rejected} ${prop}`}
             {titulo === "Último acesso" && `${data.latest} ${prop}`}
           </p>
         ) : (

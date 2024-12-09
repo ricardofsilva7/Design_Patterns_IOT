@@ -75,7 +75,7 @@ export default function UserTable() {
                             <TableRow key={index}>
                                 <TableCell>{item.nome}</TableCell>
                                 <TableCell>{item.cargo}</TableCell>
-                                <TableCell>{new Date(item.horarioEntrada).toLocaleString()}</TableCell>
+                                <TableCell>{new Date(item.horarioEntrada).toLocaleString('pt-BR', { hour12: false })}</TableCell>
                                 <TableCell>
                                     {item.tagAtiva ? (
                                         <AiOutlineCheck color="#007C00" size={24}/>  // Check verde

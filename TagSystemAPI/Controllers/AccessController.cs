@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TagSystemAPI.Data;
@@ -46,18 +47,25 @@ namespace TagSystemAPI.Controllers
             */
             
             var AccessHistory = await _context.Access
-                .OrderByDescending(ah => ah.TimeAccess)
-                .Join(_context.Users, access => access.Id, user => user.Id, (access, user) => new
+                .GroupJoin(
+                    _context.Users,
+                    access => access.Rfid,      // Chave estrangeira em Access
+                    user => user.Rfid,          // Chave primária em Users
+                    (access, users) => new { access, user = users.FirstOrDefault() }
+                )
+                .Select(result => new
                 {
-                    Nome = user.Name,
-                    Cargo = user.Role,
-                    HorarioEntrada = access.TimeAccess,
-                    TagAtiva = access.IsAuthorized,
-                    Local = access.Room
+                    Nome = result.access.IsAuthorized && result.user != null ? result.user.Name : "Individuo Indigente",
+                    Cargo = result.access.IsAuthorized && result.user != null ? result.user.Role : "Curioso",
+                    HorarioEntrada = result.access.TimeAccess,
+                    TagAtiva = result.access.IsAuthorized,
+                    Local = result.access.Room
                 })
+                .OrderByDescending(ah => ah.HorarioEntrada)
                 .ToListAsync();
 
             return Ok(AccessHistory);
+
         }
 
         [HttpGet("total")]
@@ -83,8 +91,11 @@ namespace TagSystemAPI.Controllers
             }
 
             // Formata a hora no formato HH:mm
-            var hourAccess = DateTime.Parse(latestAccess).ToString("HH:mm");
-            return Ok(new { HourAccess = hourAccess });
+            var momentAccessed = DateTime.Parse(latestAccess);
+            var culture = new CultureInfo("pt-BR");
+            var formattedAccess = $"{momentAccessed:dd} de {momentAccessed.ToString("MMMM", culture)}, {momentAccessed:HH}:{momentAccessed:mm}:{momentAccessed:ss}";
+            
+            return Ok(new { HourAccess = formattedAccess });
         }
 
         [HttpGet("dailyaccess")]
