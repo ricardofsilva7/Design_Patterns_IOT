@@ -63,7 +63,7 @@ export default function UserTable() {
                     <TableRow>
                         <TableHead>Nome</TableHead>
                         <TableHead>Cargo</TableHead>
-                        <TableHead>Horário</TableHead>
+                        <TableHead>Data e Horário</TableHead>
                         <TableHead>Autorizado</TableHead>
                         <TableHead>Local</TableHead>
                     </TableRow>
@@ -78,7 +78,7 @@ export default function UserTable() {
                                 <TableCell>{new Date(item.horarioEntrada).toLocaleString()}</TableCell>
                                 <TableCell>
                                     {item.tagAtiva ? (
-                                        <AiOutlineCheck color="#00FF00" size={24}/>  // Check verde
+                                        <AiOutlineCheck color="#007C00" size={24}/>  // Check verde
                                     ) : (
                                         <AiOutlineClose color="#FF0000" size={24}/>  // X vermelho
                                     )}
