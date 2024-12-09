@@ -124,15 +124,23 @@ namespace TagSystemAPI.Controllers
         [HttpGet("weeklyaccess")]
         public async Task<ActionResult<IEnumerable<object>>> GetWeeklyAccess()
         {
-            var weeklyAccess = await _context.Access
-                .GroupBy(a => a.TimeAccess)
+            var sevenDaysAgo = DateTime.UtcNow.Date.AddDays(-7);
+
+            // Buscar dados do banco
+            var accessData = await _context.Access.ToListAsync();
+
+            // Filtrar e agrupar em memória
+            var weeklyAccess = accessData
+                .Where(a => DateTime.TryParse(a.TimeAccess, out var parsedDate) && parsedDate >= sevenDaysAgo) // Converter string para DateTime e filtrar
+                .GroupBy(a => DateTime.Parse(a.TimeAccess).Date) // Agrupar por data
                 .Select(g => new
                 {
-                    Day = g.Key.ToString(),
-                    AccessCount = g.Count()
+                    Day = g.Key.ToString("yyyy-MM-dd"), // Formatar como "yyyy-MM-dd"
+                    Authorized = g.Count(a => a.IsAuthorized), // Contar acessos autorizados
+                    Rejected = g.Count(a => !a.IsAuthorized) // Contar acessos rejeitados
                 })
-                .OrderBy(d => d.Day)
-                .ToListAsync();
+                .OrderByDescending(d => d.Day) // Ordenar do mais recente para o mais antigo
+                .ToList();
 
             return Ok(weeklyAccess);
         }

@@ -20,21 +20,21 @@ import {
 export const description = "A line chart with dots"
 
 const chartData = [
-  { hour: "9h", acess: 186},
-  { hour: "10h", acess: 305},
-  { hour: "11h", acess: 237},
-  { hour: "12h", acess: 73},
-  { hour: "13h", acess: 209},
-  { hour: "14h", acess: 214},
-  { hour: "15h", acess: 186},
-  { hour: "16h", acess: 305},
-  { hour: "17h", acess: 237},
-  { hour: "18h", acess: 73},
-  { hour: "19h", acess: 209},
-  { hour: "20h", acess: 214},
-  { hour: "21h", acess: 214},
-  { hour: "22h", acess: 214},
-  { hour: "23h", acess: 214},
+  { hour: "9h", acess: 186 },
+  { hour: "10h", acess: 305 },
+  { hour: "11h", acess: 237 },
+  { hour: "12h", acess: 73 },
+  { hour: "13h", acess: 209 },
+  { hour: "14h", acess: 214 },
+  { hour: "15h", acess: 186 },
+  { hour: "16h", acess: 305 },
+  { hour: "17h", acess: 237 },
+  { hour: "18h", acess: 73 },
+  { hour: "19h", acess: 209 },
+  { hour: "20h", acess: 214 },
+  { hour: "21h", acess: 214 },
+  { hour: "22h", acess: 214 },
+  { hour: "23h", acess: 214 },
 ]
 
 const chartConfig = {
@@ -46,12 +46,12 @@ const chartConfig = {
 
 export function Radial() {
   return (
-    <Card className="w-full md:w-1/2 md:max-w-[600px]">
+    <Card className="w-full">
       <CardHeader>
         <div className="flex items-center justify-center">
-            <CardTitle>Por hora</CardTitle>
-            <Clock className="ml-auto w-6 h-6"/>
-        </div>        
+          <CardTitle>Por hora</CardTitle>
+          <Clock className="ml-auto w-6 h-6" />
+        </div>
         <CardDescription>Registro de acessos por tag no período de 24h</CardDescription>
       </CardHeader>
       <CardContent>
