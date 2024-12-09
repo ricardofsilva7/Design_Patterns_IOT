@@ -45,7 +45,7 @@ namespace TagSystemAPI.Controllers
             Tag ativa (Access.IsAuthorized),
             Local (Access.Room)
             */
-            
+
             var AccessHistory = await _context.Access
                 .GroupJoin(
                     _context.Users,
@@ -94,7 +94,7 @@ namespace TagSystemAPI.Controllers
             var momentAccessed = DateTime.Parse(latestAccess);
             var culture = new CultureInfo("pt-BR");
             var formattedAccess = $"{momentAccessed:dd} de {momentAccessed.ToString("MMMM", culture)}, {momentAccessed:HH}:{momentAccessed:mm}:{momentAccessed:ss}";
-            
+
             return Ok(new { HourAccess = formattedAccess });
         }
 
@@ -120,6 +120,50 @@ namespace TagSystemAPI.Controllers
 
             return Ok(new { TodayAccess });
         }
+
+        [HttpGet("weeklyaccess")]
+        public async Task<ActionResult<IEnumerable<object>>> GetWeeklyAccess()
+        {
+            var weeklyAccess = await _context.Access
+                .GroupBy(a => a.TimeAccess)
+                .Select(g => new
+                {
+                    Day = g.Key.ToString(),
+                    AccessCount = g.Count()
+                })
+                .OrderBy(d => d.Day)
+                .ToListAsync();
+
+            return Ok(weeklyAccess);
+        }
+
+        [HttpGet("hourlyaccess")]
+        public async Task<ActionResult<IEnumerable<object>>> GetHourlyAccess()
+        {
+            // Obtemos todos os acessos
+            var hourlyAccess = await _context.Access.ToListAsync();
+
+            // Filtra e converte os registros para garantir que sejam válidos
+            var validAccesses = hourlyAccess
+                .Where(a => DateTime.TryParse(a.TimeAccess, out DateTime timeAccess) && timeAccess >= DateTime.Now.AddHours(-24))
+                .ToList();
+
+            // Agrupa por hora e conta os acessos
+            var hourlyGroupedAccess = validAccesses
+                .GroupBy(a => DateTime.Parse(a.TimeAccess).Hour)
+                .Select(g => new
+                {
+                    Hour = g.Key,
+                    AccessCount = g.Count()
+                })
+                .OrderBy(h => h.Hour)
+                .ToList();
+
+            return Ok(hourlyGroupedAccess);
+        }
+
+
+
 
         // GET: api/Access/5
         [HttpGet("{id}")]
