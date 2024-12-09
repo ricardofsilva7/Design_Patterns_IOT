@@ -3,10 +3,12 @@
 import React from "react";
 import UserCard from "@/components/users";
 import RegisterUserTable from "@/components/registertable";
+import { Sidebar } from "@/components/sidebar";
 
 export default function Users() {
     return (
         <div className="sm:ml-14 p-4">
+            <Sidebar/>
             <header>
             <h1 className="my-2 font-semibold text-4xl">Usuários do sistema</h1>
             <h2 className="my-2">Administradores, editores e leitores do seu <strong>Tag System</strong>.</h2>

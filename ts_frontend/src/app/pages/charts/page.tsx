@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Bars } from '@/components/chart/Bars';
 import { Radial } from '@/components/chart/Radial';
+import { Sidebar } from "@/components/sidebar";
 
 interface Perfomance {
     id: number;
@@ -26,6 +27,7 @@ export default function Charts() {
 
     return (
     <div>
+        <Sidebar/>
         <div>
             <div className="sm:ml-14 p-4">
                     <h1 className="my-2 font-semibold text-4xl border-b">Dashboards</h1>
