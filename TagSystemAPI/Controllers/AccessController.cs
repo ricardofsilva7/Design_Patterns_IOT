@@ -35,19 +35,19 @@ namespace TagSystemAPI.Controllers
         [HttpGet("accesshistory")]
         public async Task<ActionResult<IEnumerable<object>>> GetAccessHistory()
         {
-            //consulta para retornar o histórico de acessos 
+            // Consulta para retornar o histórico de acessos
             /*
-             schema:
-             Nome (Users.Name),
-             Cargo (Users.Role),
-             Horário de entrada (Access.TimeAccess),
-             Tag ativa (Access.isAuthorized),
-             Local (Access.Room)
+            schema:
+            Nome (Users.Name),
+            Cargo (Users.Role),
+            Horário de entrada (Access.TimeAccess),
+            Tag ativa (Access.IsAuthorized),
+            Local (Access.Room)
             */
             
-            var accessHistory = await _context.Access
-                .Join(_context.Users, access => access.Id, user => user.Id,(access, user) =>
-                new 
+            var AccessHistory = await _context.Access
+                .OrderByDescending(ah => ah.TimeAccess)
+                .Join(_context.Users, access => access.Id, user => user.Id, (access, user) => new
                 {
                     Nome = user.Name,
                     Cargo = user.Role,
@@ -57,9 +57,8 @@ namespace TagSystemAPI.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(accessHistory);
+            return Ok(AccessHistory);
         }
-
 
         [HttpGet("total")]
         public async Task<ActionResult<IEnumerable<Access>>> GetTotalAccess()
@@ -70,14 +69,22 @@ namespace TagSystemAPI.Controllers
         }
 
         [HttpGet("latest")]
-        public async Task<ActionResult<IEnumerable<Access>>> GetLatestAccess()
+        public async Task<ActionResult<string>> GetLatestAccess()
         {
-            //consulta para retornar a data do último acesso
-            var UnformatHourAccess = await _context.Access.Select(la => la.TimeAccess).FirstAsync();
-            // Parse do tipo 'var' para 'DateTime'
-            DateTime parsedTime = DateTime.Parse(UnformatHourAccess);
-            var HourAccess = parsedTime.ToString("HH:mm");
-            return Ok(new { HourAccess });
+            var latestAccess = await _context.Access
+                .Where(la => la.IsAuthorized == true) // Filtra apenas os acessos autorizados
+                .OrderByDescending(la => la.TimeAccess) // Ordena os acessos pela hora mais recente
+                .Select(la => la.TimeAccess) // Seleciona a hora de acesso
+                .FirstOrDefaultAsync(); // Retorna o primeiro acesso encontrado
+
+            if (latestAccess == null)
+            {
+                return NotFound("Nenhum acesso encontrado.");
+            }
+
+            // Formata a hora no formato HH:mm
+            var hourAccess = DateTime.Parse(latestAccess).ToString("HH:mm");
+            return Ok(new { HourAccess = hourAccess });
         }
 
         [HttpGet("dailyaccess")]
