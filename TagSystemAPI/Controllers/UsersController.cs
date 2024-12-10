@@ -89,7 +89,7 @@ namespace TagSystemAPI.Controllers
                 Rfid = usersDTO.Rfid,
                 Name = usersDTO.Name,
                 Role = usersDTO.Role,
-                CreatedBy = 0,
+                CreatedBy = usersDTO.CreatedBy,
                 CreatedIn = now.ToString("yyyy-MM-dd HH:mm:ss"),
             };
 
