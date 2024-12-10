@@ -21,7 +21,6 @@ export default function RootLayout({
         "min-h-screen bg-background font-sans antialised",
         inter.className
       )}>
-
         {children}
       </body>
     </html>
