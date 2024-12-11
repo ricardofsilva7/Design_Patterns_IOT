@@ -129,9 +129,9 @@ namespace TagSystemAPI.Controllers
             // Buscar dados do banco
             var accessData = await _context.Access.ToListAsync();
 
-            // Filtrar e agrupar em memória
+            // Filtrar os dados que ocorreram nos últimos 7 dias com acesso
             var weeklyAccess = accessData
-                .Where(a => DateTime.TryParse(a.TimeAccess, out var parsedDate) && parsedDate >= sevenDaysAgo) // Converter string para DateTime e filtrar
+                .Where(a => DateTime.TryParse(a.TimeAccess, out var parsedDate) && parsedDate >= sevenDaysAgo) // Filtra acessos dos últimos 7 dias
                 .GroupBy(a => DateTime.Parse(a.TimeAccess).Date) // Agrupar por data
                 .Select(g => new
                 {
@@ -139,10 +139,15 @@ namespace TagSystemAPI.Controllers
                     Authorized = g.Count(a => a.IsAuthorized), // Contar acessos autorizados
                     Rejected = g.Count(a => !a.IsAuthorized) // Contar acessos rejeitados
                 })
-                .OrderByDescending(d => d.Day) // Ordenar do mais recente para o mais antigo
+                .OrderBy(d => d.Day) // Ordenar por data do mais antigo para o mais recente
                 .ToList();
 
-            return Ok(weeklyAccess);
+            // Filtra os resultados para incluir apenas os 7 dias mais recentes com acessos
+            var lastSevenDays = weeklyAccess
+                .TakeLast(7) // Pega os últimos 7 dias com acesso
+                .ToList();
+
+            return Ok(lastSevenDays);
         }
 
         [HttpGet("hourlyaccess")]
