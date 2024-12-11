@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TagSystemAPI.Models;
-using TagSystemAPI.Data;
+using TagSystemAPI.Facades;
 
 namespace TagSystemAPI.Controllers
 {
@@ -14,139 +11,85 @@ namespace TagSystemAPI.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly TagSystemContext _context;
+        private readonly ILoginFacade _LoginFacade;
 
-        public LoginController(TagSystemContext context)
+        public LoginController(ILoginFacade LoginFacade)
         {
-            _context = context;
+            _LoginFacade = LoginFacade;
         }
+
 
         // GET: api/Login
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Login>>> GetLogin()
         {
-            return await _context.Login.ToListAsync();
+            var logins = await _LoginFacade.GetLoginAsync();
+            return Ok(logins);
         }
+
 
         // GET: api/Login/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Login>> GetLogin(int id)
         {
-            var login = await _context.Login.FindAsync(id);
-
+            var login = await _LoginFacade.GetLoginAsync(id);
             if (login == null)
             {
                 return NotFound();
             }
-
             return login;
         }
+
 
         // PUT: api/Login/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLogin(int id, LoginDTO loginDTO)
         {
-            // Verifica se o ID é válido
-            if (id <= 0)
-            {
-                return BadRequest("Invalid ID.");
-            }
-
-            // Busca o login correspondente no banco de dados
-            var existingLogin = await _context.Login.FindAsync(id);
-            if (existingLogin == null)
-            {
-                return NotFound();
-            }
-
-            // Atualiza os campos com os dados do DTO
-            existingLogin.Username = loginDTO.Username;
-            existingLogin.Password = loginDTO.Password;
-
-            _context.Entry(existingLogin).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LoginExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _LoginFacade.UpdateLoginAsync(id, loginDTO);
             return NoContent();
         }
 
 
-        // POST: api/Login
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Login/Create
         [HttpPost("Create")]
-        public async Task<ActionResult<Login>> PostLogin(LoginDTO loginDTO)
+        public async Task<ActionResult<Login>> CreateLogin(LoginDTO loginDTO)
         {
-
-            var login = new Login
-            {
-                Username = loginDTO.Username,
-                Password = loginDTO.Password
-            };
-
-            _context.Login.Add(login);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetLogin), new { id = login.Id }, LoginToDTO(login));
+            var login = await _LoginFacade.CreateLoginAsync(loginDTO);
+            return CreatedAtAction(nameof(GetLogin), new { id = login.Id }, login);
         }
 
-        // POST: api/Login
+
         [HttpPost("Authenticate")]
         public async Task<ActionResult<Login>> Authenticate(LoginDTO loginDTO)
         {
-            // Busca pelo usuário e senha no banco de dados
-            var existingLogin = await _context.Login
-                .FirstOrDefaultAsync(l => l.Username == loginDTO.Username && l.Password == loginDTO.Password);
-
-            if (existingLogin == null)
+            try
             {
-                //Retorna erro de autenticação
-                return Unauthorized(new { message = "Autenticação falhou" });
-            }
+                var login = await _LoginFacade.AuthenticateAsync(loginDTO);
 
-            //Retorna o usuário encontrado
-            return Ok("Login autenticado");
+                // Se o login for bem-sucedido, retornamos o login com sucesso
+                return Ok(login);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Se a exceção for gerada devido a falha na autenticação, retornamos 401 (Unauthorized)
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Caso haja qualquer outra exceção, retornamos 500 (Internal Server Error)
+                return StatusCode(500, new { message = "Ocorreu um erro interno.", details = ex.Message });
+            }
         }
+
 
 
         // DELETE: api/Login/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLogin(int id)
         {
-            var login = await _context.Login.FindAsync(id);
-            if (login == null)
-            {
-                return NotFound();
-            }
-
-            _context.Login.Remove(login);
-            await _context.SaveChangesAsync();
-
+            await _LoginFacade.DeleteLoginAsync(id);
             return NoContent();
         }
-
-        private bool LoginExists(int id)
-        {
-            return _context.Login.Any(e => e.Id == id);
-        }
-
-        private static LoginDTO LoginToDTO(Login login) =>
-        new LoginDTO{
-            Username = login.Username,
-            Password = login.Password
-        };
+        
     }
 }
