@@ -97,7 +97,7 @@ export default function UserCard() {
             <CardHeader className="flex flex-col items-center">
               <User className="my-6" />
               <CardTitle>
-                <h2 className="text-lg font-semibold">{user.username}</h2>
+                <div className="text-lg font-semibold">{user.username}</div>
               </CardTitle>
             </CardHeader>
 

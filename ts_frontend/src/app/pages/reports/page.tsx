@@ -1,14 +1,16 @@
 "use client"
 
-import React from "react";
+import React, { ReactNode } from "react";
 import Relatorios from "@/components/relatorios";
 import { Sidebar } from "@/components/sidebar";
+import { ThemeProvider } from "@/components/sidebar/ThemeContext";
 
-export default function Reports() {
+export default function Reports({ children }: { children: ReactNode }) {
     return (
     <div className="sm:ml-14 p-4">
-      <Sidebar/>
-      <h1 className="my-2 font-semibold text-4xl border-b">Relatórios</h1>
+        <ThemeProvider>
+            <Sidebar/>
+        </ThemeProvider>      <h1 className="my-2 font-semibold text-4xl border-b">Relatórios</h1>
       <h2 className="my-2">Últimos relatórios gerados</h2>
 
       <section className="mt-4 flex flex-col md:flex-row gap-4">

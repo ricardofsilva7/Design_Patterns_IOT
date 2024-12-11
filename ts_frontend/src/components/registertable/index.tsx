@@ -200,6 +200,7 @@ export default function RegisterUserTable() {
                                     <TableCell>{user.rfid}</TableCell>
                                     <TableCell>{user.role}</TableCell>
                                     <TableCell>{user.createdIn}</TableCell>
+                                    <TableCell>
                                     {/* Deletar usuários */}
                                     <Dialog>
                                         <DialogTrigger asChild>
@@ -230,6 +231,7 @@ export default function RegisterUserTable() {
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
+                                    </TableCell>
                                 </TableRow>
                             ))
                         ) : (

@@ -1,9 +1,10 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { Bars } from '@/components/chart/Bars';
 import { Radial } from '@/components/chart/Radial';
 import { Sidebar } from "@/components/sidebar";
+import { ThemeProvider } from '@/components/sidebar/ThemeContext';
 
 interface Perfomance {
     id: number;
@@ -14,7 +15,7 @@ interface Perfomance {
     energy: number;
 }
 
-export default function Charts() {
+export default function Charts({ children }: { children: ReactNode }) {
     const [performance, setPerfomance] = useState<Perfomance[]>([]);
 
     useEffect(() => {
@@ -27,7 +28,9 @@ export default function Charts() {
 
     return (
     <div>
-        <Sidebar/>
+        <ThemeProvider>
+            <Sidebar/>
+        </ThemeProvider>
         <div>
             <div className="sm:ml-14 p-4">
                     <h1 className="my-2 font-semibold text-4xl border-b">Dashboards</h1>
