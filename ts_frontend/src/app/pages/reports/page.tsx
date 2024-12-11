@@ -1,9 +1,9 @@
 "use client"
 
 import React, { ReactNode } from "react";
-import Relatorios from "@/components/relatorios";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/sidebar/ThemeContext";
+import UserTable from "@/components/usertable";
 
 export default function Reports({ children }: { children: ReactNode }) {
     return (
@@ -14,7 +14,7 @@ export default function Reports({ children }: { children: ReactNode }) {
       <h2 className="my-2">Últimos relatórios gerados</h2>
 
       <section className="mt-4 flex flex-col md:flex-row gap-4">
-        <Relatorios/>
+        <UserTable />
       </section>
     </div>
     );
