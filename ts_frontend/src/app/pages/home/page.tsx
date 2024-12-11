@@ -2,14 +2,17 @@
 import InfoCard from "@/components/infocard";
 import UserTable from "@/components/usertable";
 import { LaptopMinimalCheck, LaptopMinimal, AlarmClockCheck, Hand } from "lucide-react";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Sidebar } from "@/components/sidebar";
+import { ThemeProvider } from "@/components/sidebar/ThemeContext";
 
-export default function App() {
+export default function App({ children }: { children: ReactNode }) {
   return (
     <div className="sm:ml-14 p-4 gap-2">
-      <Sidebar/>
-      <h1 className="font-semibold text-4xl border-b">Tag System</h1>
+        <ThemeProvider>
+            <Sidebar/>
+        </ThemeProvider>      
+        <h1 className="font-semibold text-4xl border-b">Tag System</h1>
       {/* <h2 className="my-2">Bem vindo de volta Admin</h2> */}
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">

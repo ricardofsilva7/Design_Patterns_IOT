@@ -1,7 +1,8 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { InfoCardIcon } from "./InfoCardIcon";
+import { InfoCardTitle } from "./InfoCardTitle";
 
 interface CardInformations {
   titulo: string;
@@ -71,7 +72,7 @@ export default function InfoCard({ titulo, subtitulo, prop, icone }: CardInforma
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg sm:text-xl select-none">{titulo}</CardTitle>
+          <InfoCardTitle titulo={titulo} />
           <InfoCardIcon icone={icone} />
         </div>
 

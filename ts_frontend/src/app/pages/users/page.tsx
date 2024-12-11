@@ -1,15 +1,18 @@
 "use client"
 
-import React from "react";
+import React, { ReactNode } from "react";
 import UserCard from "@/components/users";
 import RegisterUserTable from "@/components/registertable";
 import { Sidebar } from "@/components/sidebar";
+import { ThemeProvider } from "@/components/sidebar/ThemeContext";
 
-export default function Users() {
+export default function Users({ children }: { children: ReactNode }) {
     return (
         <div className="sm:ml-14 p-4">
+        <ThemeProvider>
             <Sidebar/>
-            <header>
+        </ThemeProvider>            
+        <header>
                 <h1 className="my-2 font-semibold text-4xl">Usuários do sistema</h1>
             <h2 className="my-2">Administradores, editores e leitores do seu <strong>Tag System</strong>.</h2>
             
