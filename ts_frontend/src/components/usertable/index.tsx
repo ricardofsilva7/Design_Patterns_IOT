@@ -17,7 +17,9 @@ interface TableInformationsProps {
 
 export default function UserTable() {
     const [data, setData] = useState<TableInformationsProps[]>([]);
+    const [filteredData, setFilteredData] = useState<TableInformationsProps[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [filters, setFilters] = useState({ nome: "", data: "", local: "" });
 
     const fetchData = useCallback(async () => {
         try {
@@ -25,15 +27,27 @@ export default function UserTable() {
                 headers: { Accept: "application/json" },
             });
 
-            if (response.data && response.data.length > 0) {
+            if (Array.isArray(response.data)) {
                 setData(response.data);
+                setFilteredData(response.data);
             } else {
                 setData([]);
+                setFilteredData([]);
+                setError("Os dados recebidos não estão no formato esperado.");
+            }
+
+            if (response.data && response.data.length > 0) {
+                setData(response.data);
+                setFilteredData(response.data); // Inicializa o estado filtrado
+            } else {
+                setData([]);
+                setFilteredData([]);
                 setError("Nenhum dado encontrado.");
             }
         } catch (error: any) {
             setError(error.response?.data || "Erro ao carregar dados.");
             setData([]);
+            setFilteredData([]);
         }
     }, []);
 
@@ -41,15 +55,51 @@ export default function UserTable() {
         fetchData();
     }, [fetchData]);
 
+    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFilters((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleFilterSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const { nome, data: dataFiltro, local } = filters;
+    
+        const filtered = data.filter((item) => {
+            const matchesNome = nome ? item.nome.toLowerCase().includes(nome.toLowerCase()) : true;
+            const matchesData = dataFiltro ? new Date(item.horarioEntrada).toISOString().startsWith(dataFiltro) : true;
+            const matchesLocal = local ? item.local.toLowerCase().includes(local.toLowerCase()) : true;
+    
+            return matchesNome && matchesData && matchesLocal;
+        });
+    
+        setFilteredData(filtered);
+    };    
+
     return (
         <Card className="w-full">
             <CardHeader>
                 <div className="flex-1 sm:flex items-center justify-between">
                     <CardTitle className="text-lg mb-2 sm:text-xl mr-2">Registro de acessos</CardTitle>
-                    <form className="flex items-center gap-2">
-                        <Input name="nome" placeholder="Nome" />
-                        <Input name="data" placeholder="Data" type="datetime-local" />
-                        <Input name="local" placeholder="Local" />
+                    <form className="flex items-center gap-2" onSubmit={handleFilterSubmit}>
+                        <Input
+                            name="nome"
+                            placeholder="Nome"
+                            value={filters.nome}
+                            onChange={handleFilterChange}
+                        />
+                        <Input
+                            name="data"
+                            placeholder="Data"
+                            type="datetime-local"
+                            value={filters.data}
+                            onChange={handleFilterChange}
+                        />
+                        <Input
+                            name="local"
+                            placeholder="Local"
+                            value={filters.local}
+                            onChange={handleFilterChange}
+                        />
                         <Button type="submit" variant="secondary">
                             <Search className="w-4 h-4 mr-2" />
                             Filtrar
@@ -70,17 +120,17 @@ export default function UserTable() {
                 </TableHeader>
 
                 <TableBody>
-                    {data.length > 0 ? (
-                        data.map((item, index) => (
+                    {filteredData.length > 0 ? (
+                        filteredData.map((item, index) => (
                             <TableRow key={index}>
                                 <TableCell>{item.nome}</TableCell>
                                 <TableCell>{item.cargo}</TableCell>
                                 <TableCell>{new Date(item.horarioEntrada).toLocaleString('pt-BR', { hour12: false })}</TableCell>
                                 <TableCell>
                                     {item.tagAtiva ? (
-                                        <AiOutlineCheck color="#007C00" size={24}/>  // Check verde
+                                        <AiOutlineCheck color="#007C00" size={24}/> // Check verde
                                     ) : (
-                                        <AiOutlineClose color="#FF0000" size={24}/>  // X vermelho
+                                        <AiOutlineClose color="#FF0000" size={24}/> // X vermelho
                                     )}
                                 </TableCell>
                                 <TableCell>{item.local}</TableCell>
@@ -89,7 +139,7 @@ export default function UserTable() {
                     ) : (
                         <TableRow>
                             <TableCell colSpan={5} className="text-center">
-                                {error || "Carregando..."}
+                                {error || "Nenhum resultado encontrado."}
                             </TableCell>
                         </TableRow>
                     )}

@@ -1,4 +1,12 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle
+"use client"
+
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card"
 import React, { useState, useEffect, useCallback } from "react";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
