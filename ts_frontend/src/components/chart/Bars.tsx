@@ -1,5 +1,6 @@
 "use client"
 
+
 import {
   Card,
   CardContent,
@@ -7,15 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
+import React, { useState, useEffect, useCallback } from "react";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Tag } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import axios from 'axios';
 
 export const description = "A bar chart"
 
@@ -37,13 +34,13 @@ const chartConfig = {
 
 export function Bars() {
   return (
-    <Card className="w-full md:w-1/2 md:max-w-[600px]">
+    <Card className="w-full">
       <CardHeader>
         <div className="flex items-center justify-center">
-            <CardTitle>Histórico de acessos</CardTitle>
-            <Tag className="ml-auto w-6 h-6"/>
+          <CardTitle>Acessos semanais</CardTitle>
+          <Tag className="ml-auto w-6 h-6" />
         </div>
-        <CardDescription>Acessos utilizando tag na semana atual</CardDescription>
+        <CardDescription>Número de acessos diários nos últimos 7 dias.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

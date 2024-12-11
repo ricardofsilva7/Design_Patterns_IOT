@@ -45,7 +45,7 @@ namespace TagSystemAPI.Controllers
             Tag ativa (Access.IsAuthorized),
             Local (Access.Room)
             */
-            
+
             var AccessHistory = await _context.Access
                 .GroupJoin(
                     _context.Users,
@@ -94,7 +94,7 @@ namespace TagSystemAPI.Controllers
             var momentAccessed = DateTime.Parse(latestAccess);
             var culture = new CultureInfo("pt-BR");
             var formattedAccess = $"{momentAccessed:dd} de {momentAccessed.ToString("MMMM", culture)}, {momentAccessed:HH}:{momentAccessed:mm}:{momentAccessed:ss}";
-            
+
             return Ok(new { HourAccess = formattedAccess });
         }
 
@@ -119,6 +119,73 @@ namespace TagSystemAPI.Controllers
 
 
             return Ok(new { TodayAccess });
+        }
+
+        [HttpGet("weeklyaccess")]
+        public async Task<ActionResult<IEnumerable<object>>> GetWeeklyAccess()
+        {
+            var sevenDaysAgo = DateTime.UtcNow.Date.AddDays(-7);
+
+            // Buscar dados do banco
+            var accessData = await _context.Access.ToListAsync();
+
+            // Filtrar os dados que ocorreram nos últimos 7 dias com acesso
+            var weeklyAccess = accessData
+                .Where(a => DateTime.TryParse(a.TimeAccess, out var parsedDate) && parsedDate >= sevenDaysAgo) // Filtra acessos dos últimos 7 dias
+                .GroupBy(a => DateTime.Parse(a.TimeAccess).Date) // Agrupar por data
+                .Select(g => new
+                {
+                    Day = g.Key.ToString("yyyy-MM-dd"), // Formatar como "yyyy-MM-dd"
+                    Authorized = g.Count(a => a.IsAuthorized), // Contar acessos autorizados
+                    Rejected = g.Count(a => !a.IsAuthorized) // Contar acessos rejeitados
+                })
+                .OrderBy(d => d.Day) // Ordenar por data do mais antigo para o mais recente
+                .ToList();
+
+            // Filtra os resultados para incluir apenas os 7 dias mais recentes com acessos
+            var lastSevenDays = weeklyAccess
+                .TakeLast(7) // Pega os últimos 7 dias com acesso
+                .ToList();
+
+            return Ok(lastSevenDays);
+        }
+
+        [HttpGet("hourlyaccess")]
+        public async Task<ActionResult<IEnumerable<object>>> GetHourlyAccess()
+        {
+            // Obtemos todos os acessos
+            var hourlyAccess = await _context.Access.ToListAsync();
+
+            // Definindo os horários de início e fim para o intervalo de dados
+            DateTime startDate = new DateTime(2024, 12, 10, 19, 33, 29);  // Hora de início: 2024-12-10 19:33:29
+            DateTime endDate = new DateTime(2024, 12, 11, 16, 2, 32);  // Hora de fim: 2024-12-11 16:02:32
+
+            // Filtra os acessos dentro do intervalo de tempo específico
+            var validAccesses = hourlyAccess
+                .Where(a => DateTime.TryParse(a.TimeAccess, out DateTime timeAccess) 
+                            && timeAccess >= startDate // Acessos a partir do horário de início
+                            && timeAccess <= endDate)  // Acessos até o horário de fim
+                .ToList();
+
+            // Ordena os acessos pela hora (para manter a ordem correta)
+            var orderedAccesses = validAccesses
+                .OrderBy(a => DateTime.Parse(a.TimeAccess))  // Ordena por data e hora
+                .ToList();
+
+            // Agrupa os acessos por hora
+            var hourlyGroupedAccess = orderedAccesses
+                .GroupBy(a => DateTime.Parse(a.TimeAccess).Hour)  // Agrupando por hora
+                .Select(g => new
+                {
+                    Hour = g.Key,  // Hora do acesso
+                    // Contagem dos acessos autorizados (IsAuthorized == true) e rejeitados (IsAuthorized == false)
+                    Authorized = g.Count(a => a.IsAuthorized == true),  
+                    Rejected = g.Count(a => a.IsAuthorized == false)
+                })
+                .ToList();
+
+            // Retorna os dados agrupados por hora
+            return Ok(hourlyGroupedAccess); 
         }
 
         // GET: api/Access/5

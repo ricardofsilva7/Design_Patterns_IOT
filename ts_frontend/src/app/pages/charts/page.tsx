@@ -1,11 +1,10 @@
 "use client"
 
-import React, { useState, useEffect, ReactNode } from 'react';
-import { Bars } from '@/components/chart/Bars';
-import { Radial } from '@/components/chart/Radial';
 import { Sidebar } from "@/components/sidebar";
+import React, { useState, useEffect, ReactNode } from 'react';
+import { BarChartMultiple } from '@/components/chart/BarChartMultiple';
+import { LineChartMultiple } from '@/components/chart/LineChartMultiple';
 import { ThemeProvider } from '@/components/sidebar/ThemeContext';
-
 interface Perfomance {
     id: number;
     step: string;
@@ -35,12 +34,12 @@ export default function Charts({ children }: { children: ReactNode }) {
             <div className="sm:ml-14 p-4">
                     <h1 className="my-2 font-semibold text-4xl border-b">Dashboards</h1>
                     <h2 className="my-2">Resumo dos últimos acessos</h2>
-                <section className="mt-4 flex flex-col md:flex-row gap-4">
-                    <Bars/>
-                    <Radial/>
-                </section>
+                    <section className="mt-4 grid grid-cols-2 gap-4">
+                        <BarChartMultiple />
+                        <LineChartMultiple />
+                    </section>
+                </div>
             </div>
         </div>
-    </div>
     );
 }
