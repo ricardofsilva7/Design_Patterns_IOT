@@ -1,6 +1,6 @@
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart"
 

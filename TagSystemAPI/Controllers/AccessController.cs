@@ -156,27 +156,37 @@ namespace TagSystemAPI.Controllers
             // Obtemos todos os acessos
             var hourlyAccess = await _context.Access.ToListAsync();
 
-            // Filtra e converte os registros para garantir que sejam válidos
+            // Definindo os horários de início e fim para o intervalo de dados
+            DateTime startDate = new DateTime(2024, 12, 10, 19, 33, 29);  // Hora de início: 2024-12-10 19:33:29
+            DateTime endDate = new DateTime(2024, 12, 11, 16, 2, 32);  // Hora de fim: 2024-12-11 16:02:32
+
+            // Filtra os acessos dentro do intervalo de tempo específico
             var validAccesses = hourlyAccess
-                .Where(a => DateTime.TryParse(a.TimeAccess, out DateTime timeAccess) && timeAccess >= DateTime.Now.AddHours(-24))
+                .Where(a => DateTime.TryParse(a.TimeAccess, out DateTime timeAccess) 
+                            && timeAccess >= startDate // Acessos a partir do horário de início
+                            && timeAccess <= endDate)  // Acessos até o horário de fim
                 .ToList();
 
-            // Agrupa por hora e conta os acessos
-            var hourlyGroupedAccess = validAccesses
-                .GroupBy(a => DateTime.Parse(a.TimeAccess).Hour)
+            // Ordena os acessos pela hora (para manter a ordem correta)
+            var orderedAccesses = validAccesses
+                .OrderBy(a => DateTime.Parse(a.TimeAccess))  // Ordena por data e hora
+                .ToList();
+
+            // Agrupa os acessos por hora
+            var hourlyGroupedAccess = orderedAccesses
+                .GroupBy(a => DateTime.Parse(a.TimeAccess).Hour)  // Agrupando por hora
                 .Select(g => new
                 {
-                    Hour = g.Key,
-                    AccessCount = g.Count()
+                    Hour = g.Key,  // Hora do acesso
+                    // Contagem dos acessos autorizados (IsAuthorized == true) e rejeitados (IsAuthorized == false)
+                    Authorized = g.Count(a => a.IsAuthorized == true),  
+                    Rejected = g.Count(a => a.IsAuthorized == false)
                 })
-                .OrderBy(h => h.Hour)
                 .ToList();
 
-            return Ok(hourlyGroupedAccess);
+            // Retorna os dados agrupados por hora
+            return Ok(hourlyGroupedAccess); 
         }
-
-
-
 
         // GET: api/Access/5
         [HttpGet("{id}")]

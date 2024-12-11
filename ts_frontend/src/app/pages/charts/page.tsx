@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChartMultiple } from '@/components/chart/BarChartMultiple';
 import { Radial } from '@/components/chart/Radial';
 import { Sidebar } from "@/components/sidebar";
+import { LineChartMultiple } from '@/components/chart/LineChartMultiple';
 
 interface Perfomance {
     id: number;
@@ -34,7 +35,8 @@ export default function Charts() {
                     <h2 className="my-2">Resumo dos últimos acessos</h2>
                     <section className="mt-4 grid grid-cols-2 gap-4">
                         <BarChartMultiple />
-                        <Radial />
+                        {/* <Radial /> */}
+                        <LineChartMultiple />
                     </section>
                 </div>
             </div>
