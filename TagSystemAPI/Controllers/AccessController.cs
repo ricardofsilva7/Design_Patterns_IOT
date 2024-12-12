@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TagSystemAPI.Data;
 using TagSystemAPI.Models;
+using TagSystemAPI.Builders;
 
 namespace TagSystemAPI.Controllers
 {
@@ -238,20 +239,16 @@ namespace TagSystemAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Access>> PostAccess(AccessDTO accessDTO)
         {
-            // Devemos verificar se o rfid já existe na tabela User para autorizar ou não o acesso
-            // e preencher o campo 'isAuthorized' com 'true' ou 'false'
-
-            // Consulta para buscar o 'rfid' na tabela 'user'
+            // Verifica se o RFID existe na tabela User
             var AccessAuthorized = await _context.Users.AnyAsync(u => u.Rfid == accessDTO.Rfid);
 
-            var access = new Access
-            {
-                Rfid = accessDTO.Rfid,
-                Room = accessDTO.Room,
-                TimeAccess = accessDTO.TimeAccess,
-                // armazena o resultado da consulta no campo 'isAuthorized'
-                IsAuthorized = AccessAuthorized,
-            };
+            // Usa o Builder para criar o objeto Access
+            var access = new AccessBuilder()
+                            .SetRfid(accessDTO.Rfid)
+                            .SetRoom(accessDTO.Room)
+                            .SetTimeAccess(accessDTO.TimeAccess)
+                            .SetIsAuthorized(AccessAuthorized)
+                            .Build();
 
             _context.Access.Add(access);
             await _context.SaveChangesAsync();
